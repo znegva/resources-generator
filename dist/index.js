@@ -17,6 +17,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs-extra"));
 const gm = __importStar(require("gm"));
+const splashspecs_1 = require("./splashspecs");
 function getImageSpecs(filename, im) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => {
@@ -118,77 +119,11 @@ function generateTarget(sourceFile, targetDir, target) {
     }));
 }
 //lets try it
-let android = {
-    description: "Splashscreens for android",
-    sourceFile: "splash.png",
-    targetDir: "android/",
-    targets: [
-        {
-            fileName: "screen-ldpi-portrait.9.png",
-            width: 320,
-            height: 426
-        },
-        {
-            fileName: "screen-ldpi-landscape.9.png",
-            width: 426,
-            height: 320
-        },
-        {
-            fileName: "screen-hdpi-portrait.9.png",
-            width: 480,
-            height: 640
-        },
-        {
-            fileName: "screen-hdpi-landscape.9.png",
-            width: 640,
-            height: 480
-        },
-        {
-            fileName: "screen-mdpi-portrait.9.png",
-            width: 320,
-            height: 470
-        },
-        {
-            fileName: "screen-mdpi-landscape.9.png",
-            width: 470,
-            height: 320
-        },
-        {
-            fileName: "screen-xhdpi-portrait.9.png",
-            width: 720,
-            height: 960
-        },
-        {
-            fileName: "screen-xhdpi-landscape.9.png",
-            width: 960,
-            height: 720
-        },
-        {
-            fileName: "screen-xxhdpi-portrait.9.png",
-            width: 960,
-            height: 1600
-        },
-        {
-            fileName: "screen-xxhdpi-landscape.9.png",
-            width: 1600,
-            height: 960
-        },
-        {
-            fileName: "screen-xxxhdpi-portrait.9.png",
-            width: 1280,
-            height: 1920
-        },
-        {
-            fileName: "screen-xxxhdpi-landscape.9.png",
-            width: 1920,
-            height: 1280
-        } // 1920x1280
-    ]
-};
 function generateTargets(def) {
     def.targets.forEach(target => {
         generateTarget(def.sourceFile, def.targetDir, target);
     });
 }
 exports.generateTargets = generateTargets;
-generateTargets(android);
+generateTargets(splashspecs_1.android);
+generateTargets(splashspecs_1.ios);

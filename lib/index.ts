@@ -1,7 +1,8 @@
 import * as fs from "fs-extra";
 import * as gm from "gm";
+import { android, ios } from "./splashspecs";
 
-interface ItargetSpec {
+export interface ItargetSpec {
   fileName: string;
   width: number;
   height: number;
@@ -12,7 +13,7 @@ interface IimageSpecs {
   height: number;
 }
 
-interface IsplashDefinition {
+export interface IsplashDefinition {
   description: string;
   sourceFile: string;
   targetDir: string; //directory where to store the generated splashes
@@ -134,7 +135,11 @@ function generateTarget(
             `Could not write ${target.fileName}, please check your config.`
           );
         } else {
-          console.log(`Generating ${target.fileName} finished. ${applyNinePatch?"(Nine-Patch applied)":""}`);
+          console.log(
+            `Generating ${target.fileName} finished. ${
+              applyNinePatch ? "(Nine-Patch applied)" : ""
+            }`
+          );
         }
       });
     } else {
@@ -144,74 +149,6 @@ function generateTarget(
 }
 
 //lets try it
-let android: IsplashDefinition = {
-  description: "Splashscreens for android",
-  sourceFile: "splash.png",
-  targetDir: "android/",
-  targets: [
-    {
-      fileName: "screen-ldpi-portrait.9.png",
-      width: 320,
-      height: 426
-    },
-    {
-      fileName: "screen-ldpi-landscape.9.png",
-      width: 426,
-      height: 320
-    },
-    {
-      fileName: "screen-hdpi-portrait.9.png",
-      width: 480,
-      height: 640
-    }, // 320x480
-    {
-      fileName: "screen-hdpi-landscape.9.png",
-      width: 640,
-      height: 480
-    }, // 480x320
-    {
-      fileName: "screen-mdpi-portrait.9.png",
-      width: 320,
-      height: 470
-    }, // 480x800
-    {
-      fileName: "screen-mdpi-landscape.9.png",
-      width: 470,
-      height: 320
-    }, // 800x480
-    {
-      fileName: "screen-xhdpi-portrait.9.png",
-      width: 720,
-      height: 960
-    }, // 720x1280
-    {
-      fileName: "screen-xhdpi-landscape.9.png",
-      width: 960,
-      height: 720
-    }, // 1280x720
-    {
-      fileName: "screen-xxhdpi-portrait.9.png",
-      width: 960,
-      height: 1600
-    }, // 960x1600
-    {
-      fileName: "screen-xxhdpi-landscape.9.png",
-      width: 1600,
-      height: 960
-    }, // 1600x960
-    {
-      fileName: "screen-xxxhdpi-portrait.9.png",
-      width: 1280,
-      height: 1920
-    }, // 1280x1920
-    {
-      fileName: "screen-xxxhdpi-landscape.9.png",
-      width: 1920,
-      height: 1280
-    } // 1920x1280
-  ]
-};
-
 export function generateTargets(def: IsplashDefinition) {
   def.targets.forEach(target => {
     generateTarget(def.sourceFile, def.targetDir, target);
@@ -219,3 +156,4 @@ export function generateTargets(def: IsplashDefinition) {
 }
 
 generateTargets(android);
+generateTargets(ios);

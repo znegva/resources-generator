@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.androidSplashDefaults = {
     description: "Splashscreens for Android",
-    sourceFile: "splash.png",
-    targetDir: ".res/screens/android/",
+    sourceFile: "./model/splash.png",
+    targetDir: "./res/screens/android/",
     targets: [
         { fileName: "screen-ldpi-portrait.9.png", width: 320, height: 426 },
         { fileName: "screen-ldpi-landscape.9.png", width: 426, height: 320 },
@@ -21,7 +21,7 @@ exports.androidSplashDefaults = {
 };
 exports.iosSplashDefaults = {
     description: "Splashscreens for iOS",
-    sourceFile: "splash.png",
+    sourceFile: "./model/splash.png",
     targetDir: "./res/screens/ios/",
     targets: [
         { fileName: "Default@2x~universal~anyany.png", width: 2732, height: 2732 },

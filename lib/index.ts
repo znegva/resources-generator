@@ -1,7 +1,5 @@
-import * as path from "path";
 import * as fs from "fs-extra";
 import * as gm from "gm";
-import * as async from "async";
 
 interface ItargetSpec {
   fileName: string;

@@ -11,13 +11,10 @@
   "author": "Martin Kausche",
   "license": "MIT",
   "dependencies": {
-    "async": "^2.6.1",
     "fs-extra": "^7.0.1",
-    "gm": "^1.23.1",
-    "path": "^0.12.7"
+    "gm": "^1.23.1"
   },
   "devDependencies": {
-    "@types/async": "^2.4.0",
     "@types/fs-extra": "^5.0.4",
     "@types/gm": "^1.18.2",
     "@types/node": "^10.12.18",

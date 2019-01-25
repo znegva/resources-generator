@@ -1,0 +1,21 @@
+{
+  "name": "cordova-splash-gen",
+  "version": "0.0.1",
+  "description": "Another Corodova splashscreen generator script",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "author": "Martin Kausche",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extended": "^0.2.1",
+    "gm": "^1.23.1",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "typescript": "^3.2.4"
+  }
+}

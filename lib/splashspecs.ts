@@ -1,9 +1,9 @@
-import { IsplashDefinition } from "./index";
+import { IsplashDefinition } from "./extra";
 
-export let android: IsplashDefinition = {
+export let androidSplashDefaults: IsplashDefinition = {
   description: "Splashscreens for Android",
   sourceFile: "splash.png",
-  targetDir: "android/",
+  targetDir: ".res/screens/android/",
   targets: [
     { fileName: "screen-ldpi-portrait.9.png", width: 320, height: 426 },
     { fileName: "screen-ldpi-landscape.9.png", width: 426, height: 320 },
@@ -20,10 +20,10 @@ export let android: IsplashDefinition = {
   ]
 };
 
-export let ios: IsplashDefinition = {
+export let iosSplashDefaults: IsplashDefinition = {
   description:"Splashscreens for iOS",
   sourceFile: "splash.png",
-  targetDir: "./ios/",
+  targetDir: "./res/screens/ios/",
   targets: [
     { fileName: "Default@2x~universal~anyany.png", width: 2732, height: 2732 },
     { fileName: "Default@2x~universal~comany.png", width: 1278, height: 2732 },

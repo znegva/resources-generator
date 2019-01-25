@@ -1,41 +1,8 @@
 import * as fs from "fs-extra";
 import * as gm from "gm";
-import { android, ios } from "./splashspecs";
+import { ItargetSpec, IsplashDefinition, getImageDim } from "./extra";
 
-export interface ItargetSpec {
-  fileName: string;
-  width: number;
-  height: number;
-}
-
-interface IimageSpecs {
-  width: number;
-  height: number;
-}
-
-export interface IsplashDefinition {
-  description: string;
-  sourceFile: string;
-  targetDir: string; //directory where to store the generated splashes
-  targets: Array<ItargetSpec>;
-}
-
-async function getImageSpecs(
-  filename: string,
-  im: gm.SubClass
-): Promise<IimageSpecs> {
-  return new Promise((resolve, reject) => {
-    im(filename)
-      .ping()
-      .size((err, size) => {
-        if (!err) {
-          resolve(size);
-        } else {
-          reject();
-        }
-      });
-  });
-}
+import { androidSplashDefaults, iosSplashDefaults } from "./splashspecs";
 
 function generateTarget(
   sourceFile: string,
@@ -60,7 +27,7 @@ function generateTarget(
         imageMagick: true
       });
 
-      let input: IimageSpecs = await getImageSpecs(sourceFile, im);
+      let sourceDim: gm.Dimensions = await getImageDim(sourceFile, im);
 
       //open the input file
       let convert = im(sourceFile);
@@ -70,13 +37,13 @@ function generateTarget(
       //if the target is larger than the input, we fill up
       //no filling needed if we want nine-patch (which will be applied later!)
       if (
-        (input.height < target.height || input.width < target.width) &&
+        (sourceDim.height < target.height || sourceDim.width < target.width) &&
         !applyNinePatch
       ) {
         //fill up until target specs are met! WE NEVER SCALE UP!
         console.log("filling the splash, its too small");
-        let paddingVer = Math.floor((target.height - input.height) / 2);
-        let paddingHor = Math.floor((target.width - input.width) / 2);
+        let paddingVer = Math.floor((target.height - sourceDim.height) / 2);
+        let paddingHor = Math.floor((target.width - sourceDim.width) / 2);
         convert = convert
           .in("-define")
           .in(
@@ -155,5 +122,5 @@ export function generateTargets(def: IsplashDefinition) {
   });
 }
 
-generateTargets(android);
-generateTargets(ios);
+generateTargets(androidSplashDefaults);
+generateTargets(iosSplashDefaults);

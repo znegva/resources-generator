@@ -17,23 +17,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs-extra"));
 const gm = __importStar(require("gm"));
+const extra_1 = require("./extra");
 const splashspecs_1 = require("./splashspecs");
-function getImageSpecs(filename, im) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return new Promise((resolve, reject) => {
-            im(filename)
-                .ping()
-                .size((err, size) => {
-                if (!err) {
-                    resolve(size);
-                }
-                else {
-                    reject();
-                }
-            });
-        });
-    });
-}
 function generateTarget(sourceFile, targetDir, target) {
     if (sourceFile === target.fileName) {
         console.error(`Skipping ${target.fileName}, output would overwrite input file`);
@@ -47,18 +32,18 @@ function generateTarget(sourceFile, targetDir, target) {
             let im = gm.subClass({
                 imageMagick: true
             });
-            let input = yield getImageSpecs(sourceFile, im);
+            let sourceDim = yield extra_1.getImageDim(sourceFile, im);
             //open the input file
             let convert = im(sourceFile);
             //REVIEW: maybe we should flatten input files (layers etc)
             //if the target is larger than the input, we fill up
             //no filling needed if we want nine-patch (which will be applied later!)
-            if ((input.height < target.height || input.width < target.width) &&
+            if ((sourceDim.height < target.height || sourceDim.width < target.width) &&
                 !applyNinePatch) {
                 //fill up until target specs are met! WE NEVER SCALE UP!
                 console.log("filling the splash, its too small");
-                let paddingVer = Math.floor((target.height - input.height) / 2);
-                let paddingHor = Math.floor((target.width - input.width) / 2);
+                let paddingVer = Math.floor((target.height - sourceDim.height) / 2);
+                let paddingHor = Math.floor((target.width - sourceDim.width) / 2);
                 convert = convert
                     .in("-define")
                     .in("distort:viewport=" +
@@ -125,5 +110,5 @@ function generateTargets(def) {
     });
 }
 exports.generateTargets = generateTargets;
-generateTargets(splashspecs_1.android);
-generateTargets(splashspecs_1.ios);
+generateTargets(splashspecs_1.androidSplashDefaults);
+generateTargets(splashspecs_1.iosSplashDefaults);

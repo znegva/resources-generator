@@ -1,12 +1,2 @@
-export interface ItargetSpec {
-    fileName: string;
-    width: number;
-    height: number;
-}
-export interface IsplashDefinition {
-    description: string;
-    sourceFile: string;
-    targetDir: string;
-    targets: Array<ItargetSpec>;
-}
+import { IsplashDefinition } from "./extra";
 export declare function generateTargets(def: IsplashDefinition): void;

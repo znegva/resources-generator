@@ -1,7 +1,7 @@
 {
-  "name": "cordova-splash-gen",
+  "name": "cordova-resources-gen",
   "version": "0.0.1",
-  "description": "Another Corodova splashscreen generator script",
+  "description": "Another Cordova resources generator script",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

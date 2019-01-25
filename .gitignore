@@ -3,3 +3,8 @@ build
 npm-debug.log
 .env
 .DS_Store
+
+## some dirs and files we use for testing atm
+android
+ios
+splash*png

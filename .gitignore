@@ -5,6 +5,5 @@ npm-debug.log
 .DS_Store
 
 ## some dirs and files we use for testing atm
-android
-ios
-splash*png
+/model
+/res

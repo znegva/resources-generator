@@ -20,7 +20,7 @@ exports.androidSplashDefaults = {
     ]
 };
 exports.iosSplashDefaults = {
-    description: "Splashscreens for iOS",
+    description: "Splashscreens for iOS (Storyboards)",
     sourceFile: "./model/splash.png",
     targetDir: "./res/screens/ios/",
     targets: [

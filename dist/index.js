@@ -24,7 +24,8 @@ function generateTarget(sourceFile, targetDir, target) {
         console.error(`Skipping ${target.fileName}, output would overwrite input file`);
         return;
     }
-    let applyNinePatch = target.fileName.indexOf(".9.png") > -1;
+    let applyNinePatch = target.fileName.slice(-6) == ".9.png";
+    let needFlatten = sourceFile.slice(-4) == ".psd"; //combine layers etc.
     fs.exists(sourceFile, (exists) => __awaiter(this, void 0, void 0, function* () {
         if (exists) {
             //create output dir, if needed
@@ -35,7 +36,9 @@ function generateTarget(sourceFile, targetDir, target) {
             let sourceDim = yield extra_1.getImageDim(sourceFile, im);
             //open the input file
             let convert = im(sourceFile);
-            //REVIEW: maybe we should flatten input files (layers etc)
+            if (needFlatten) {
+                convert = convert.flatten();
+            }
             //if the target is larger than the input, we fill up
             //no filling needed if we want nine-patch (which will be applied later!)
             if ((sourceDim.height < target.height || sourceDim.width < target.width) &&
@@ -105,6 +108,7 @@ function generateTarget(sourceFile, targetDir, target) {
 }
 //lets try it
 function generateTargets(def) {
+    console.log(`Generating:${def.description} from ${def.sourceFile}`);
     def.targets.forEach(target => {
         generateTarget(def.sourceFile, def.targetDir, target);
     });

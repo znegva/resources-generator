@@ -16,7 +16,8 @@ function generateTarget(
     return;
   }
 
-  let applyNinePatch = target.fileName.indexOf(".9.png") > -1;
+  let applyNinePatch = target.fileName.slice(-6) ==".9.png";
+  let needFlatten = sourceFile.slice(-4) == ".psd"; //combine layers etc.
 
   fs.exists(sourceFile, async exists => {
     if (exists) {
@@ -32,7 +33,9 @@ function generateTarget(
       //open the input file
       let convert = im(sourceFile);
 
-      //REVIEW: maybe we should flatten input files (layers etc)
+      if (needFlatten){
+        convert = convert.flatten();
+      }
 
       //if the target is larger than the input, we fill up
       //no filling needed if we want nine-patch (which will be applied later!)
@@ -117,6 +120,7 @@ function generateTarget(
 
 //lets try it
 export function generateTargets(def: IsplashDefinition) {
+  console.log(`Generating:${def.description} from ${def.sourceFile}`);
   def.targets.forEach(target => {
     generateTarget(def.sourceFile, def.targetDir, target);
   });

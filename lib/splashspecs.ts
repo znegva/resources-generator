@@ -21,7 +21,7 @@ export let androidSplashDefaults: IsplashDefinition = {
 };
 
 export let iosSplashDefaults: IsplashDefinition = {
-  description:"Splashscreens for iOS",
+  description:"Splashscreens for iOS (Storyboards)",
   sourceFile: "./model/splash.png",
   targetDir: "./res/screens/ios/",
   targets: [

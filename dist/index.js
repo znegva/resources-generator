@@ -18,7 +18,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs-extra"));
 const gm = __importStar(require("gm"));
 const extra_1 = require("./extra");
-const splashspecs_1 = require("./splashspecs");
+const specs_1 = require("./specs");
 function generateTarget(sourceFile, targetDir, target) {
     if (sourceFile === target.fileName) {
         console.error(`Skipping ${target.fileName}, output would overwrite input file`);
@@ -114,5 +114,5 @@ function generateTargets(def) {
     });
 }
 exports.generateTargets = generateTargets;
-generateTargets(splashspecs_1.androidSplashDefaults);
-generateTargets(splashspecs_1.iosSplashDefaults);
+generateTargets(specs_1.androidSplashDefaults);
+generateTargets(specs_1.iosSplashDefaults);

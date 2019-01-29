@@ -2,7 +2,7 @@ import * as fs from "fs-extra";
 import * as gm from "gm";
 import { ItargetSpec, IsplashDefinition, getImageDim } from "./extra";
 
-import { androidSplashDefaults, iosSplashDefaults } from "./splashspecs";
+import { androidSplashDefaults, iosSplashDefaults } from "./specs";
 
 function generateTarget(
   sourceFile: string,

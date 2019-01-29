@@ -3,17 +3,17 @@ import * as gm from "gm";
 /*
  * Interfaces
  */
-export interface ItargetSpec {
+export interface TargetSpecification {
   fileName: string;
   width: number;
   height: number;
 }
 
-export interface IsplashDefinition {
+export interface ResourceDefinition {
   description: string;
   sourceFile: string;
   targetDir: string; //directory where to store the generated splashes
-  targets: Array<ItargetSpec>;
+  targets: Array<TargetSpecification>;
 }
 
 /*

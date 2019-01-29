@@ -1,13 +1,13 @@
 import * as gm from "gm";
-export interface ItargetSpec {
+export interface TargetSpecification {
     fileName: string;
     width: number;
     height: number;
 }
-export interface IsplashDefinition {
+export interface ResourceDefinition {
     description: string;
     sourceFile: string;
     targetDir: string;
-    targets: Array<ItargetSpec>;
+    targets: Array<TargetSpecification>;
 }
 export declare function getImageDim(filename: string, im: gm.SubClass): Promise<gm.Dimensions>;

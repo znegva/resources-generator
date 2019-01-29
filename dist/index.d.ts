@@ -1,2 +1,2 @@
-import { IsplashDefinition } from "./extra";
-export declare function generateTargets(def: IsplashDefinition): void;
+import { ResourceDefinition } from "./extra";
+export declare function generateTargets(def: ResourceDefinition): void;

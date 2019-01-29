@@ -1,13 +1,13 @@
 import * as fs from "fs-extra";
 import * as gm from "gm";
-import { ItargetSpec, IsplashDefinition, getImageDim } from "./extra";
+import { TargetSpecification, ResourceDefinition, getImageDim } from "./extra";
 
 import { androidSplashDefaults, iosSplashDefaults } from "./specs";
 
 function generateTarget(
   sourceFile: string,
   targetDir: string,
-  target: ItargetSpec
+  target: TargetSpecification
 ): void {
   if (sourceFile === target.fileName) {
     console.error(
@@ -119,7 +119,7 @@ function generateTarget(
 }
 
 //lets try it
-export function generateTargets(def: IsplashDefinition) {
+export function generateTargets(def: ResourceDefinition) {
   console.log(`Generating:${def.description} from ${def.sourceFile}`);
   def.targets.forEach(target => {
     generateTarget(def.sourceFile, def.targetDir, target);

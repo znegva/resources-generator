@@ -1,6 +1,6 @@
-import { IsplashDefinition } from "./extra";
+import { ResourceDefinition } from "./extra";
 
-export let androidSplashDefaults: IsplashDefinition = {
+export let androidSplashDefaults: ResourceDefinition = {
   description: "Splashscreens for Android",
   sourceFile: "./model/splash.png",
   targetDir: "./res/screens/android/",
@@ -20,7 +20,7 @@ export let androidSplashDefaults: IsplashDefinition = {
   ]
 };
 
-export let iosSplashDefaults: IsplashDefinition = {
+export let iosSplashDefaults: ResourceDefinition = {
   description:"Splashscreens for iOS (Storyboards)",
   sourceFile: "./model/splash.png",
   targetDir: "./res/screens/ios/",

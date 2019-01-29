@@ -1,3 +1,3 @@
-import { IsplashDefinition } from "./extra";
-export declare let androidSplashDefaults: IsplashDefinition;
-export declare let iosSplashDefaults: IsplashDefinition;
+import { ResourceDefinition } from "./extra";
+export declare let androidSplashDefaults: ResourceDefinition;
+export declare let iosSplashDefaults: ResourceDefinition;

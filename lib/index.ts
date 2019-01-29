@@ -2,7 +2,12 @@ import * as fs from "fs-extra";
 import * as gm from "gm";
 import { TargetSpecification, ResourceDefinition, getImageDim } from "./extra";
 
-import { androidSplashDefaults, iosSplashDefaults } from "./specs";
+import {
+  androidSplashDefaults,
+  iosSplashDefaults,
+  iosIconDefaults,
+  androidIconDefaults
+} from "./specs";
 
 function generateTarget(
   sourceFile: string,
@@ -16,7 +21,7 @@ function generateTarget(
     return;
   }
 
-  let applyNinePatch = target.fileName.slice(-6) ==".9.png";
+  let applyNinePatch = target.fileName.slice(-6) == ".9.png";
   let needFlatten = sourceFile.slice(-4) == ".psd"; //combine layers etc.
 
   fs.exists(sourceFile, async exists => {
@@ -28,12 +33,15 @@ function generateTarget(
         imageMagick: true
       });
 
+      //prepare our dimensions (source and target)
       let sourceDim: gm.Dimensions = await getImageDim(sourceFile, im);
+      //targets without height are assumed to become square
+      target.height = target.height ? target.height : target.width;
 
       //open the input file
       let convert = im(sourceFile);
 
-      if (needFlatten){
+      if (needFlatten) {
         convert = convert.flatten();
       }
 
@@ -44,7 +52,7 @@ function generateTarget(
         !applyNinePatch
       ) {
         //fill up until target specs are met! WE NEVER SCALE UP!
-        console.log("filling the splash, its too small");
+        //this imitates what 9-Patch stretching would do
         let paddingVer = Math.floor((target.height - sourceDim.height) / 2);
         let paddingHor = Math.floor((target.width - sourceDim.width) / 2);
         convert = convert
@@ -133,3 +141,6 @@ export function generateTargets(def: ResourceDefinition) {
 
 generateTargets(androidSplashDefaults);
 generateTargets(iosSplashDefaults);
+
+generateTargets(androidIconDefaults);
+generateTargets(iosIconDefaults);

@@ -6,7 +6,7 @@ import * as gm from "gm";
 export interface TargetSpecification {
   fileName: string;
   width: number;
-  height: number;
+  height?: number;  //height is optional, if only width is given we assume a square target
 }
 
 export interface ResourceDefinition {

@@ -2,7 +2,7 @@ import * as gm from "gm";
 export interface TargetSpecification {
     fileName: string;
     width: number;
-    height: number;
+    height?: number;
 }
 export interface ResourceDefinition {
     description: string;

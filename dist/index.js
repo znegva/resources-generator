@@ -33,7 +33,10 @@ function generateTarget(sourceFile, targetDir, target) {
             let im = gm.subClass({
                 imageMagick: true
             });
+            //prepare our dimensions (source and target)
             let sourceDim = yield extra_1.getImageDim(sourceFile, im);
+            //targets without height are assumed to become square
+            target.height = target.height ? target.height : target.width;
             //open the input file
             let convert = im(sourceFile);
             if (needFlatten) {
@@ -44,7 +47,7 @@ function generateTarget(sourceFile, targetDir, target) {
             if ((sourceDim.height < target.height || sourceDim.width < target.width) &&
                 !applyNinePatch) {
                 //fill up until target specs are met! WE NEVER SCALE UP!
-                console.log("filling the splash, its too small");
+                //this imitates what 9-Patch stretching would do
                 let paddingVer = Math.floor((target.height - sourceDim.height) / 2);
                 let paddingHor = Math.floor((target.width - sourceDim.width) / 2);
                 convert = convert
@@ -61,6 +64,10 @@ function generateTarget(sourceFile, targetDir, target) {
                     .in("SRT")
                     .in("0")
                     .in("+repage");
+            }
+            else if (sourceDim.height == target.height &&
+                sourceDim.width == target.width) {
+                // we dont need to resize or crop!
             }
             else {
                 //we need to crop and/or resize
@@ -116,3 +123,5 @@ function generateTargets(def) {
 exports.generateTargets = generateTargets;
 generateTargets(specs_1.androidSplashDefaults);
 generateTargets(specs_1.iosSplashDefaults);
+generateTargets(specs_1.androidIconDefaults);
+generateTargets(specs_1.iosIconDefaults);

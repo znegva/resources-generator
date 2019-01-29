@@ -63,6 +63,11 @@ function generateTarget(
           .in("SRT")
           .in("0")
           .in("+repage");
+      } else if (
+        sourceDim.height == target.height &&
+        sourceDim.width == target.width
+      ) {
+        // we dont need to resize or crop!
       } else {
         //we need to crop and/or resize
         //first resize to biggest dimension

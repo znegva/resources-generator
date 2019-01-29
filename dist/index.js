@@ -28,8 +28,6 @@ function generateTarget(sourceFile, targetDir, target) {
     let needFlatten = sourceFile.slice(-4) == ".psd"; //combine layers etc.
     fs.exists(sourceFile, (exists) => __awaiter(this, void 0, void 0, function* () {
         if (exists) {
-            //create output dir, if needed
-            fs.ensureDirSync(targetDir);
             let im = gm.subClass({
                 imageMagick: true
             });
@@ -98,8 +96,11 @@ function generateTarget(sourceFile, targetDir, target) {
             }
             //dont store color profile
             convert = convert.noProfile();
+            //create output dir, if needed
+            let fullTarget = targetDir + target.fileName;
+            fs.ensureFileSync(fullTarget);
             //save the file
-            convert.write(targetDir + target.fileName, error => {
+            convert.write(fullTarget, error => {
                 if (error) {
                     console.log(`Could not write ${target.fileName}, please check your config.`);
                 }
@@ -125,3 +126,4 @@ generateTargets(specs_1.androidSplashDefaults);
 generateTargets(specs_1.iosSplashDefaults);
 generateTargets(specs_1.androidIconDefaults);
 generateTargets(specs_1.iosIconDefaults);
+generateTargets(specs_1.androidNotificationIconDefaults);

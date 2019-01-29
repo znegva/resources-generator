@@ -6,7 +6,9 @@ import {
   androidSplashDefaults,
   iosSplashDefaults,
   iosIconDefaults,
-  androidIconDefaults
+  androidIconDefaults,
+  androidCoverImage,
+  androidNotificationIconDefaults
 } from "./specs";
 
 function generateTarget(
@@ -146,3 +148,5 @@ generateTargets(iosSplashDefaults);
 
 generateTargets(androidIconDefaults);
 generateTargets(iosIconDefaults);
+
+generateTargets(androidNotificationIconDefaults);

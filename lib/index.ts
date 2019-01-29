@@ -26,8 +26,6 @@ function generateTarget(
 
   fs.exists(sourceFile, async exists => {
     if (exists) {
-      //create output dir, if needed
-      fs.ensureDirSync(targetDir);
 
       let im = gm.subClass({
         imageMagick: true
@@ -111,8 +109,12 @@ function generateTarget(
       //dont store color profile
       convert = convert.noProfile();
 
+      //create output dir, if needed
+      let fullTarget = targetDir + target.fileName;
+      fs.ensureFileSync(fullTarget);
+
       //save the file
-      convert.write(targetDir + target.fileName, error => {
+      convert.write(fullTarget, error => {
         if (error) {
           console.log(
             `Could not write ${target.fileName}, please check your config.`

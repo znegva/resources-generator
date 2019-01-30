@@ -18,14 +18,12 @@ in your `config.xml`!
 
 ## ToDo
 
-- [x] add icon defaults
-  - [x] we need to make sure transparent is working (e.g. for corners on Android icons)
 - [ ] `README.md`
   - [x] Android
   - [ ] iOS
-  - [ ] Howto use
+  - [ ] explain defaultSpecs
+  - [ ] Howto use binary
   - [ ] Howto include in your own project
-- [ ] add `./bin/` that uses default-specs
-  - explain default specs in readme
+- [x] add to `./bin/` <s>that uses default-specs</s>
 - [ ] add tests
 - ..

@@ -1,2 +1,2 @@
 import { ResourceDefinition } from "./extra";
-export declare function generateTargets(def: ResourceDefinition): void;
+export declare function generateResource(def: ResourceDefinition): Promise<any>;

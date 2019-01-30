@@ -18,9 +18,8 @@ in your `config.xml`!
 
 ## ToDo
 
-- [ ] add icon defaults
-  - [ ] we need to make sure transparent is working (e.g. for corners on Android icons)
-  - [ ] transparent should NOT be allowed for splashscreens
+- [x] add icon defaults
+  - [x] we need to make sure transparent is working (e.g. for corners on Android icons)
 - [ ] `README.md`
   - [x] Android
   - [ ] iOS

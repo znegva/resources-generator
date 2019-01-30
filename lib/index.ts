@@ -137,16 +137,10 @@ export function generateResource(def: ResourceDefinition): Promise<any> {
     if (fs.existsSync(def.sourceFile)) {
       let promises: Array<Promise<any>> = [];
       def.targets.forEach(target => {
-        console.log(`starting ${target.fileName}`);
         promises.push(generateTarget(def.sourceFile, def.targetDir, target));
       });
       Promise.all(promises)
         .then(() => {
-          console.log(
-            `all promises for ${
-              def.description
-            } seem to be resolved. length of promises is ${promises.length}`
-          );
           resolve();
         })
         .catch(e => {

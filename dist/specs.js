@@ -117,7 +117,7 @@ exports.androidCoverImage = {
 //you need to make sure to copy these files by yourself to 'platforms/android/app/src/main/res/'
 exports.androidNotificationIconDefaults = {
     description: "Android Notification Icons (copy to drawable)",
-    sourceFile: "./model/android/icon_notification.png",
+    sourceFile: "./model/android_notification/icon.png",
     targetDir: "./res/icons/android_notification/",
     targets: [
         { fileName: "drawable/icon_notification.png", width: 48 },

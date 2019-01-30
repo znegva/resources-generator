@@ -1,6 +1,6 @@
 {
   "name": "cordova-resources-gen",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Another Cordova resources generator script",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

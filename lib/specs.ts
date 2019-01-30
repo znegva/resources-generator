@@ -124,7 +124,7 @@ export let androidCoverImage: ResourceDefinition = {
 //you need to make sure to copy these files by yourself to 'platforms/android/app/src/main/res/'
 export let androidNotificationIconDefaults: ResourceDefinition = {
   description: "Android Notification Icons (copy to drawable)",
-  sourceFile: "./model/android/icon_notification.png",
+  sourceFile: "./model/android_notification/icon.png",
   targetDir: "./res/icons/android_notification/",
   targets: [
     { fileName: "drawable/icon_notification.png", width: 48 },

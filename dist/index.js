@@ -98,11 +98,11 @@ function generateTarget(sourceFile, targetDir, target) {
         return new Promise((resolve, reject) => {
             convert.write(fullTarget, error => {
                 if (error) {
-                    console.log(`Could not write ${target.fileName}, please check your config.`);
+                    console.log(` ✖ Could not write ${target.fileName}, please check your config.`);
                     reject();
                 }
                 else {
-                    console.log(`${target.fileName} generated${applyNinePatch ? " (Nine-Patch applied)." : "."}`);
+                    console.log(` ✔ ${target.fileName} generated${applyNinePatch ? " (Nine-Patch applied)." : "."}`);
                     resolve();
                 }
             });
@@ -112,6 +112,7 @@ function generateTarget(sourceFile, targetDir, target) {
 //lets try it
 function generateResource(def) {
     console.log(`Generating: ${def.description} from ${def.sourceFile}`);
+    console.log(`(source file: ${def.sourceFile}, target directory: ${def.targetDir})`);
     return new Promise((resolve, reject) => {
         if (fs.existsSync(def.sourceFile)) {
             let promises = [];

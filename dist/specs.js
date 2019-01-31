@@ -41,6 +41,7 @@ exports.iosSplashDefaults = {
 exports.androidIconDefaults = {
     description: "Icon files for Android",
     sourceFile: "./model/android/icon.png",
+    keepAlpha: true,
     targetDir: "./res/icons/android/",
     targets: [
         //Play Store Icon
@@ -118,6 +119,7 @@ exports.androidCoverImage = {
 exports.androidNotificationIconDefaults = {
     description: "Android Notification Icons (copy to drawable)",
     sourceFile: "./model/android_notification/icon.png",
+    keepAlpha: true,
     targetDir: "./res/icons/android_notification/",
     targets: [
         { fileName: "drawable/icon_notification.png", width: 48 },

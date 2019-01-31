@@ -126,8 +126,8 @@ async function generateTarget(
       } else {
         console.log(
           ` ✔ ${target.fileName} generated${
-            applyNinePatch ? " (Nine-Patch applied)." : "."
-          }`
+            applyNinePatch ? " (Nine-Patch applied)" : ""
+          }${keepAlpha ? " (Alpha Channel preserved)":""}.`
         );
         resolve();
       }
@@ -137,7 +137,7 @@ async function generateTarget(
 
 //lets try it
 export function generateResource(def: ResourceDefinition): Promise<any> {
-  console.log(`Generating: ${def.description}`);
+  console.log(`\nGenerating: ${def.description}`);
   console.log(
     `(source file: ${def.sourceFile}, target directory: ${def.targetDir})`
   );
@@ -150,7 +150,7 @@ export function generateResource(def: ResourceDefinition): Promise<any> {
           generateTarget(
             def.sourceFile,
             def.targetDir,
-            def.keepAlpha ? true : false,
+            def.keepAlpha == true,
             target
           )
         );

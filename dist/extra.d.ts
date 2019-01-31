@@ -7,6 +7,7 @@ export interface TargetSpecification {
 export interface ResourceDefinition {
     description: string;
     sourceFile: string;
+    keepAlpha?: boolean;
     targetDir: string;
     targets: Array<TargetSpecification>;
 }

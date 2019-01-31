@@ -18,7 +18,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs-extra"));
 const gm = __importStar(require("gm"));
 const extra_1 = require("./extra");
-function generateTarget(sourceFile, targetDir, target) {
+function generateTarget(sourceFile, targetDir, keepAlpha, target) {
     return __awaiter(this, void 0, void 0, function* () {
         let applyNinePatch = target.fileName.slice(-6) == ".9.png";
         let needFlatten = sourceFile.slice(-4) == ".psd"; //combine layers etc.
@@ -91,6 +91,10 @@ function generateTarget(sourceFile, targetDir, target) {
         }
         //dont store color profile
         convert = convert.noProfile().strip();
+        //remove the alpha-channel, except we are forced to keep it
+        if (!keepAlpha) {
+            convert = convert.out("-background", "white", "-alpha", "off");
+        }
         //create output dir, if needed
         let fullTarget = targetDir + target.fileName;
         fs.ensureFileSync(fullTarget);
@@ -102,7 +106,7 @@ function generateTarget(sourceFile, targetDir, target) {
                     reject();
                 }
                 else {
-                    console.log(` ✔ ${target.fileName} generated${applyNinePatch ? " (Nine-Patch applied)." : "."}`);
+                    console.log(` ✔ ${target.fileName} generated${applyNinePatch ? " (Nine-Patch applied)" : ""}${keepAlpha ? " (Alpha Channel preserved)" : ""}.`);
                     resolve();
                 }
             });
@@ -111,13 +115,13 @@ function generateTarget(sourceFile, targetDir, target) {
 }
 //lets try it
 function generateResource(def) {
-    console.log(`Generating: ${def.description}`);
+    console.log(`\nGenerating: ${def.description}`);
     console.log(`(source file: ${def.sourceFile}, target directory: ${def.targetDir})`);
     return new Promise((resolve, reject) => {
         if (fs.existsSync(def.sourceFile)) {
             let promises = [];
             def.targets.forEach(target => {
-                promises.push(generateTarget(def.sourceFile, def.targetDir, target));
+                promises.push(generateTarget(def.sourceFile, def.targetDir, def.keepAlpha == true, target));
             });
             Promise.all(promises)
                 .then(() => {

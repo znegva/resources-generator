@@ -90,7 +90,7 @@ function generateTarget(sourceFile, targetDir, target) {
                 .drawLine(1, target.height + 1, target.width, target.height + 1);
         }
         //dont store color profile
-        convert = convert.noProfile();
+        convert = convert.noProfile().strip();
         //create output dir, if needed
         let fullTarget = targetDir + target.fileName;
         fs.ensureFileSync(fullTarget);
@@ -111,7 +111,7 @@ function generateTarget(sourceFile, targetDir, target) {
 }
 //lets try it
 function generateResource(def) {
-    console.log(`Generating: ${def.description} from ${def.sourceFile}`);
+    console.log(`Generating: ${def.description}`);
     console.log(`(source file: ${def.sourceFile}, target directory: ${def.targetDir})`);
     return new Promise((resolve, reject) => {
         if (fs.existsSync(def.sourceFile)) {

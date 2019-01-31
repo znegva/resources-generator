@@ -14,6 +14,7 @@ import {
 async function generateTarget(
   sourceFile: string,
   targetDir: string,
+  keepAlpha: boolean,
   target: TargetSpecification
 ): Promise<void> {
   let applyNinePatch = target.fileName.slice(-6) == ".9.png";
@@ -105,6 +106,11 @@ async function generateTarget(
   //dont store color profile
   convert = convert.noProfile().strip();
 
+  //remove the alpha-channel, except we are forced to keep it
+  if (!keepAlpha) {
+    convert = convert.out("-background", "white", "-alpha", "off");
+  }
+
   //create output dir, if needed
   let fullTarget = targetDir + target.fileName;
   fs.ensureFileSync(fullTarget);
@@ -140,7 +146,14 @@ export function generateResource(def: ResourceDefinition): Promise<any> {
     if (fs.existsSync(def.sourceFile)) {
       let promises: Array<Promise<any>> = [];
       def.targets.forEach(target => {
-        promises.push(generateTarget(def.sourceFile, def.targetDir, target));
+        promises.push(
+          generateTarget(
+            def.sourceFile,
+            def.targetDir,
+            def.keepAlpha ? true : false,
+            target
+          )
+        );
       });
       Promise.all(promises)
         .then(() => {

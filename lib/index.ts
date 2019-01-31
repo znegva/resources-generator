@@ -107,7 +107,9 @@ async function generateTarget(
   convert = convert.noProfile().strip();
 
   //remove the alpha-channel, except we are forced to keep it
-  if (!keepAlpha) {
+  if (keepAlpha || applyNinePatch) {
+    //dont remove alpha!!
+  }else{
     convert = convert.out("-background", "white", "-alpha", "off");
   }
 

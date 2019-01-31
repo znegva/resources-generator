@@ -92,7 +92,10 @@ function generateTarget(sourceFile, targetDir, keepAlpha, target) {
         //dont store color profile
         convert = convert.noProfile().strip();
         //remove the alpha-channel, except we are forced to keep it
-        if (!keepAlpha) {
+        if (keepAlpha || applyNinePatch) {
+            //dont remove alpha!!
+        }
+        else {
             convert = convert.out("-background", "white", "-alpha", "off");
         }
         //create output dir, if needed

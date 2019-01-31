@@ -103,7 +103,7 @@ async function generateTarget(
   }
 
   //dont store color profile
-  convert = convert.noProfile();
+  convert = convert.noProfile().strip();
 
   //create output dir, if needed
   let fullTarget = targetDir + target.fileName;
@@ -131,8 +131,10 @@ async function generateTarget(
 
 //lets try it
 export function generateResource(def: ResourceDefinition): Promise<any> {
-  console.log(`Generating: ${def.description} from ${def.sourceFile}`);
-  console.log(`(source file: ${def.sourceFile}, target directory: ${def.targetDir})`);
+  console.log(`Generating: ${def.description}`);
+  console.log(
+    `(source file: ${def.sourceFile}, target directory: ${def.targetDir})`
+  );
 
   return new Promise((resolve, reject) => {
     if (fs.existsSync(def.sourceFile)) {

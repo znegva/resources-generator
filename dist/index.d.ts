@@ -1,2 +1,2 @@
-import { ResourceDefinition } from "./extra";
+import { ResourceDefinition } from "./specs";
 export declare function generateResource(def: ResourceDefinition): Promise<any>;

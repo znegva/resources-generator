@@ -105,6 +105,7 @@ exports.iosIconDefaults = {
 /*
  * some special stuff
  */
+//maybe you want to create your Play Store Cover Image from the splash-template
 exports.androidCoverImage = {
     description: "Android Play Store Cover Image",
     sourceFile: "./model/splash.png",

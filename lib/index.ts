@@ -1,15 +1,26 @@
 import * as fs from "fs-extra";
 import * as gm from "gm";
-import { TargetSpecification, ResourceDefinition, getImageDim } from "./extra";
+import { TargetSpecification, ResourceDefinition } from "./specs";
 
-import {
-  androidSplashDefaults,
-  iosSplashDefaults,
-  iosIconDefaults,
-  androidIconDefaults,
-  androidCoverImage,
-  androidNotificationIconDefaults
-} from "./specs";
+/*
+ * helper functions
+ */
+async function getImageDim(
+  filename: string,
+  im: gm.SubClass
+): Promise<gm.Dimensions> {
+  return new Promise((resolve, reject) => {
+    im(filename)
+      .ping()
+      .size((err, size) => {
+        if (!err) {
+          resolve(size);
+        } else {
+          reject();
+        }
+      });
+  });
+}
 
 async function generateTarget(
   sourceFile: string,
@@ -109,7 +120,7 @@ async function generateTarget(
   //remove the alpha-channel, except we are forced to keep it
   if (keepAlpha || applyNinePatch) {
     //dont remove alpha!!
-  }else{
+  } else {
     convert = convert.out("-background", "white", "-alpha", "off");
   }
 
@@ -129,7 +140,7 @@ async function generateTarget(
         console.log(
           ` ✔ ${target.fileName} generated${
             applyNinePatch ? " (Nine-Patch applied)" : ""
-          }${keepAlpha ? " (Alpha Channel preserved)":""}.`
+          }${keepAlpha ? " (Alpha Channel preserved)" : ""}.`
         );
         resolve();
       }
@@ -137,7 +148,9 @@ async function generateTarget(
   });
 }
 
-//lets try it
+/*
+ * our main export
+ */
 export function generateResource(def: ResourceDefinition): Promise<any> {
   console.log(`\nGenerating: ${def.description}`);
   console.log(
@@ -147,7 +160,7 @@ export function generateResource(def: ResourceDefinition): Promise<any> {
   return new Promise((resolve, reject) => {
     if (fs.existsSync(def.sourceFile)) {
       let promises: Array<Promise<any>> = [];
-      def.targets.forEach(target => {
+      def.targets.forEach((target: TargetSpecification) => {
         promises.push(
           generateTarget(
             def.sourceFile,

@@ -1,4 +1,19 @@
-import { ResourceDefinition } from "./extra";
+/*
+ * Interfaces
+ */
+export interface TargetSpecification {
+  fileName: string;
+  width: number;
+  height?: number; //height is optional, if only width is given we assume a square target
+}
+
+export interface ResourceDefinition {
+  description: string;
+  sourceFile: string;
+  keepAlpha?: boolean; //sometimes we need to keep the Alpha-Channel (e.g. Android icons)
+  targetDir: string; //directory where to store the generated splashes
+  targets: Array<TargetSpecification>;
+}
 
 /*
  * Splashscreen default definitions
@@ -111,6 +126,7 @@ export let iosIconDefaults: ResourceDefinition = {
 /*
  * some special stuff
  */
+//maybe you want to create your Play Store Cover Image from the splash-template
 export let androidCoverImage: ResourceDefinition = {
   description: "Android Play Store Cover Image",
   sourceFile: "./model/splash.png",

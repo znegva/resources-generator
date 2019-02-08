@@ -17,7 +17,25 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs-extra"));
 const gm = __importStar(require("gm"));
-const extra_1 = require("./extra");
+/*
+ * helper functions
+ */
+function getImageDim(filename, im) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => {
+            im(filename)
+                .ping()
+                .size((err, size) => {
+                if (!err) {
+                    resolve(size);
+                }
+                else {
+                    reject();
+                }
+            });
+        });
+    });
+}
 function generateTarget(sourceFile, targetDir, keepAlpha, target) {
     return __awaiter(this, void 0, void 0, function* () {
         let applyNinePatch = target.fileName.slice(-6) == ".9.png";
@@ -30,7 +48,7 @@ function generateTarget(sourceFile, targetDir, keepAlpha, target) {
             imageMagick: true
         });
         //prepare our dimensions (source and target)
-        let sourceDim = yield extra_1.getImageDim(sourceFile, im);
+        let sourceDim = yield getImageDim(sourceFile, im);
         //targets without height are assumed to become square
         target.height = target.height ? target.height : target.width;
         //open the input file
@@ -116,14 +134,16 @@ function generateTarget(sourceFile, targetDir, keepAlpha, target) {
         });
     });
 }
-//lets try it
+/*
+ * our main export
+ */
 function generateResource(def) {
     console.log(`\nGenerating: ${def.description}`);
     console.log(`(source file: ${def.sourceFile}, target directory: ${def.targetDir})`);
     return new Promise((resolve, reject) => {
         if (fs.existsSync(def.sourceFile)) {
             let promises = [];
-            def.targets.forEach(target => {
+            def.targets.forEach((target) => {
                 promises.push(generateTarget(def.sourceFile, def.targetDir, def.keepAlpha == true, target));
             });
             Promise.all(promises)

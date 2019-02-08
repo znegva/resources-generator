@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 var path = require("path");
-var crg = require(path.resolve(__dirname, "../dist/index"));
+var rg = require(path.resolve(__dirname, "../dist/index"));
 var argv = require("yargs").argv;
-var crg_specs = require(path.resolve(__dirname, "../dist/specs"));
+var rg_specs = require(path.resolve(__dirname, "../dist/specs"));
 
 var platform = argv.platform;
 var type = argv.type;
@@ -18,7 +18,7 @@ if (
   !(type == "splash" || type == "icon")
 ) {
   console.log(
-    `Usage: cordova-resources-gen --platform=(android|ios) --type=(splash|icon) [--source="./image.png"] [--targetDir="./put/it/here/"]`
+    `Usage: resources-generator --platform=(android|ios) --type=(splash|icon) [--source="./image.png"] [--targetDir="./put/it/here/"]`
   );
   console.log(`Please provide at least platform and type.`);
   return;
@@ -27,11 +27,10 @@ if (
 //we can start now...
 var def;
 if (platform == "android" && type == "splash")
-  def = crg_specs.androidSplashDefaults;
-if (platform == "android" && type == "icon")
-  def = crg_specs.androidIconDefaults;
-if (platform == "ios" && type == "splash") def = crg_specs.iosSplashDefaults;
-if (platform == "ios" && type == "icon") def = crg_specs.iosIconDefaults;
+  def = rg_specs.androidSplashDefaults;
+if (platform == "android" && type == "icon") def = rg_specs.androidIconDefaults;
+if (platform == "ios" && type == "splash") def = rg_specs.iosSplashDefaults;
+if (platform == "ios" && type == "icon") def = rg_specs.iosIconDefaults;
 
 if (source) {
   def.sourceFile = source;
@@ -46,4 +45,4 @@ if (targetDir) {
 }
 
 //we are done, lets try to run it
-crg.generateResource(def);
+rg.generateResource(def);

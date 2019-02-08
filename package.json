@@ -1,12 +1,12 @@
 {
-  "name": "cordova-resources-gen",
-  "version": "0.0.6",
+  "name": "resources-generator",
+  "version": "0.1.0",
   "description": "Another Cordova resources generator script",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "preferGlobal": false,
   "bin": {
-    "cordova-resources-gen": "./bin/cordova-resources-gen"
+    "resources-generator": "./bin/resources-generator"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

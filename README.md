@@ -1,9 +1,4 @@
-This project is **work-in-progress**!
-
-When finished it can be used to generate all needed splashscreen and icon files
-for Cordova projects based on single source files.
-
-# cordova-resources-gen
+# resources-generator
 
 Generate automatically resized splashscreens and icons for mobile platforms,
 e.g. for Cordova based projects.  
@@ -40,13 +35,13 @@ For any individual requirements please see [chapter _in your own scripts_](#in-y
 
 ### from the command-line
 
-The package includes a binary that can be called as `cordova-resources-gen` 
+The package includes a binary that can be called as `resources-generator` 
 from within your project (or from everywhere when the package was installed globally).
 When called without any parameters a hint on how to use it is given:
 
 ```bash
- % cordova-resources-gen
-Usage: cordova-resources-gen --platform=(android|ios) --type=(splash|icon) [--source="./image.png"] [--targetDir="./put/it/here/"]
+ % resources-generator
+Usage: resources-generator --platform=(android|ios) --type=(splash|icon) [--source="./image.png"] [--targetDir="./put/it/here/"]
 Please provide at least platform and type.
 ```
 
@@ -71,7 +66,7 @@ A good starting point are the predefined specifications from [`dist/specs`](./di
 Example:
 
 ```typescript
-import { generateResource } from "cordova-resources-gen";
+import { generateResource } from "resources-generator";
 import {
   ResourceDefinition,
   androidSplashDefaults,
@@ -79,7 +74,7 @@ import {
   androidNotificationIconDefaults,
   iosSplashDefaults,
   iosIconDefaults
-} from "cordova-resources-gen/dist/specs";
+} from "resources-generator/dist/specs";
 
 //change the template for Android splashcreens
 androidSplashDefaults.sourceFile = "./model/android/splash.png";
@@ -137,7 +132,7 @@ You may save this script inside of your projects as  `scripts/generate-resources
 
 Now you are able to call `npm run resources:generate` to regenerate your resources.
 
-For a plain node example please see [`bin/cordova-resources-gen`](bin/cordova-resources-gen).
+For a plain node example please see [`bin/resources-generator`](bin/resources-generator).
 
 ### Special cases
 

@@ -11,7 +11,7 @@ export interface ResourceDefinition {
   description: string;
   sourceFile: string;
   keepAlpha?: boolean; //sometimes we need to keep the Alpha-Channel (e.g. Android icons)
-  targetDir: string; //directory where to store the generated splashes
+  targetDir: string; //directory where to store the generated resources
   targets: Array<TargetSpecification>;
 }
 

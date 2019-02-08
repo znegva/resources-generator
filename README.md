@@ -1,11 +1,13 @@
 This project is **work-in-progress**!
 
-When finished it can be used to generate all needed splashscreen and icon files for Cordova projects based on single source files.
+When finished it can be used to generate all needed splashscreen and icon files
+for Cordova projects based on single source files.
 
 # cordova-resources-gen
 
-Generate splashscreens and icons for your Cordova based project.  
-Use this project to automatically resize a given splashscreen or icon image for all your platforms (iOS + Android atm).
+Generate automatically resized splashscreens and icons for mobile platforms,
+e.g. for Cordova based projects.  
+
 
 ## Installation
 
@@ -15,13 +17,48 @@ Inside of your project directory:
  % npm install "https://github.com/znegva/splashicon-generator.git"
 ```
 
-Atm only installation directly from GitHub is possible, adding this project to the npm repository is planned.
+Atm only installation directly from GitHub is possible, adding this project
+to the npm repository is planned.
 
 ## Usage
 
+Your splash should be a 2732x2732px image, and the main content should fit a center square of 1200x1200px.
+
+Your icon template should be a 1024x1024px image.
+For Android you have to take care of the rounded corners yourself, everything you 
+don't want to see must be transparent - so your best choice is to use a png-template.
+Please also note [chapter transparency](#transparency) below.
+
+### Special cases
+
+#### NinePatch images
+
+Android supports [NinePatch drawables](https://developer.android.com/guide/topics/graphics/drawables#nine-patch) 
+for its splashscreens - this project automatically generates them when your targets `fileName` 
+has the extension `*.9.png` , e.g. `screen-mdpi-portrait.9.png`.
+
+The Android splashscreen defaults in `dist/specs` are configured to generate NinePatch files.
+
+**Hint:** To make nine-patch splashscreen work you need to set
+
+```xml
+<preference name="SplashMaintainAspectRatio" value="false" />
+```
+
+in your `config.xml`!
+
+#### Transparency
+
+When nothing else is declared Alpha channel (transparency) is removed from the resulting resource images.  
+If you want to keep transparency you need to set this in your `ResourceDefinition` by declaring `keepAlpha` as `true`.
+The Android icon defaults in `dist/specs` are configured to preserve transparency.
+
+As [NinePatch images](#ninepatch-images) are based on transparent areas alpha channel is preserved here in every case.
+
 ### from the command-line
 
-The package includes a binary that can be called as `cordova-resources-gen` from within your project (or from everywhere when the package was installed globally).
+The package includes a binary that can be called as `cordova-resources-gen` 
+from within your project (or from everywhere when the package was installed globally).
 When called without any parameters a hint on how to use it is given:
 
 ```bash
@@ -30,9 +67,13 @@ Usage: cordova-resources-gen --platform=(android|ios) --type=(splash|icon) [--so
 Please provide at least platform and type.
 ```
 
-The _binary_ uses the defaults for Android respectively iOS as described in [specifications](#specifications).
+The _binary_ uses the default targets for Android respectively iOS as described 
+in [specifications](#specifications), you can change the source-image 
+(via `--source="./myimage.png"`) and the directory where the results shall 
+be saved (via `--targetDir`).
 
-__Hint:__ To be able to directly use locally installed node binaries make sure to add the following to your `.bashrc` or `.zshrc`:
+**Hint:** To be able to directly use locally installed node binaries make sure 
+to add the following to your `.bashrc` or `.zshrc`:
 
 ```bash
 # use locally installed node bins
@@ -43,13 +84,38 @@ PATH="./node_modules/.bin:$PATH"
 
 TODO
 
+
 ## Specifications
 
-To make the script usable straight away we defined some defaults for splashscreens and icons for Android and iOS.  
-The can be found in [`lib/specs.ts`](./lib/specs.ts) / [`dist/specs.js`](./dist/specs.js).  
+To generate resources your input needs to follow some specifications, they are 
+described by interfaces that can be imported from [`dist/specs`](./dist/specs.d.ts).
+
+```typescript
+export interface TargetSpecification {
+  fileName: string;
+  width: number;
+  height?: number; //height is optional, if only width is given we assume a square target
+}
+
+export interface ResourceDefinition {
+  description: string;
+  sourceFile: string;
+  keepAlpha?: boolean; //sometimes we need to keep the Alpha-Channel (e.g. Android icons)
+  targetDir: string; //directory where to store the generated resources
+  targets: Array<TargetSpecification>;
+}
+```
+
+To make the script usable straight away we defined some defaults for splashscreens and icons for Android and iOS.
+
+They can be imported from [`dist/specs`](./dist/specs.js).
 
 We predefined the following:
-<details><summary>Android splashscreens (uses 9-Patch!, mdpi to xxxhdpi)</summary>
+
+<details>
+<summary>
+  Android splashscreens (uses 9-Patch!, ldpi to xxxhdpi)
+</summary>
 
 ```typescript
 export let androidSplashDefaults: ResourceDefinition = {
@@ -72,9 +138,13 @@ export let androidSplashDefaults: ResourceDefinition = {
   ]
 };
 ```
+
 </details>
 
-<details><summary>iOS splashscreens (Storyboards)</summary>
+<details>
+<summary>
+  iOS splashscreens (Storyboards)
+</summary>
 
 ```typescript
 export let iosSplashDefaults: ResourceDefinition = {
@@ -91,9 +161,13 @@ export let iosSplashDefaults: ResourceDefinition = {
   ]
 };
 ```
+
 </details>
 
-<details><summary>Android icons (mdpi to xxxhdpi, Play Store Icon)</summary>
+<details>
+<summary>
+  Android icons (ldpi to xxxhdpi, Play Store Icon)
+</summary>
 
 ```typescript
 export let androidIconDefaults: ResourceDefinition = {
@@ -114,9 +188,13 @@ export let androidIconDefaults: ResourceDefinition = {
   ]
 };
 ```
+
 </details>
 
-<details><summary>iOS icons (for all current devices, App Store Icon)</summary>
+<details>
+<summary>
+  iOS icons (for all current devices, App Store Icon)
+</summary>
 
 ```typescript
 export let iosIconDefaults: ResourceDefinition = {
@@ -169,30 +247,5 @@ export let iosIconDefaults: ResourceDefinition = {
   ]
 };
 ```
+
 </details>
-
-### Android
-
-Android supports [NinePatch drawables](https://developer.android.com/guide/topics/graphics/drawables#nine-patch) for its splashscreens - this project automatically generates them when your targets `fileName` has the extension `*.9.png` , e.g. `screen-mdpi-portrait.9.png`.
-
-The Android defaults in `dist/splashspecs.js` are configured to generate 9-Patch files for the Android target.
-
-**Hint:** To make nine-patch splashscreen work you need to set
-
-```xml
-<preference name="SplashMaintainAspectRatio" value="false" />
-```
-
-in your `config.xml`!
-
-## ToDo
-
-- [ ] `README.md`
-  - [x] Android
-  - [ ] iOS
-  - [ ] explain defaultSpecs
-  - [x] How-to use binary
-  - [ ] How-to include in your own project
-- [x] add to `./bin/` <s>that uses default-specs</s>
-- [ ] add tests
-- ..

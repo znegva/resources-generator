@@ -93,7 +93,79 @@ PATH="./node_modules/.bin:$PATH"
 
 ### in your own scripts
 
-TODO
+If you want to define your own specifications the best choice is to build your own script.  
+A good starting point are the predefined specifications from [`dist/specs`](./dist/specs.d.ts).
+
+Example:
+
+```typescript
+import { generateResource } from "cordova-resources-gen";
+import {
+  ResourceDefinition,
+  androidSplashDefaults,
+  androidIconDefaults,
+  androidNotificationIconDefaults,
+  iosSplashDefaults,
+  iosIconDefaults
+} from "cordova-resources-gen/dist/specs";
+
+//change the template for android splashcreens
+androidSplashDefaults.sourceFile = "./model/android/splash.png";
+
+//we also want a 256px Android icon
+androidIconDefaults.targets.push({
+  fileName: "icon-512.png",
+  width: 512
+});
+
+// we also want icons for our PWA, based on the android icon template
+let pwa:ResourceDefinition = {
+  description: "PWA icons",
+  sourceFile: "./model/android/icon.png",
+  targetDir: "./src/assets/icon/",
+  keepAlpha: true,
+  targets: [
+    { fileName: "icon-192.png", width: 192 },
+    { fileName: "icon-512.png", width: 512 },
+    { fileName: "favicon.ico", width: 64 }
+  ]
+};
+
+let resources = [
+  androidSplashDefaults,
+  androidIconDefaults,
+  androidNotificationIconDefaults,
+  iosSplashDefaults,
+  iosIconDefaults,
+  pwa
+];
+
+//create one after the other
+resources.reduce((func, resource) => {
+  return func
+    .then(_ => generateResource(resource))
+    .catch(e => {
+      return;
+    });
+}, Promise.resolve());
+```
+
+You may save this script inside of your projects as  `scripts/generate-resources.ts` and add to your `package.json`:
+
+```
+{
+...
+  "scripts": {
+    ...
+    "resources:generate": "cross-env TS_NODE_COMPILER_OPTIONS='{ \"module\": \"commonjs\" }' ts-node scripts/generate-resources.ts"
+  },
+  ...
+}
+```
+
+Now you are able to call `npm run resources:generate` to regenerate your resources.
+
+For a plain node example please see [`bin/cordova-resources-gen`](bin/cordova-resources-gen).
 
 
 ## Specifications

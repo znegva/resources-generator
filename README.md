@@ -1,8 +1,16 @@
-# resources-generator
-
 Generate automatically resized splashscreens and icons for mobile platforms,
 e.g. for Cordova based projects.  
 
+- [Installation](#installation)
+- [Usage](#usage)
+  - [From the command-line](#from-the-command-line)
+  - [In your own scripts](#in-your-own-scripts)
+  - [Special cases](#special-cases)
+    - [NinePatch images](#ninepatch-images)
+    - [Transparency](#transparency)
+    - [Small templates](#small-templates)
+- [Specifications](#specifications)
+- [Add to your Cordova project](#add-to-your-cordova-project)
 
 ## Installation
 
@@ -33,7 +41,7 @@ When using the [default specifications](specifications) or the [command-line ver
 
 For any individual requirements please see [chapter _in your own scripts_](#in-your-own-scripts). 
 
-### from the command-line
+### From the command-line
 
 The package includes a binary that can be called as `resources-generator` 
 from within your project (or from everywhere when the package was installed globally).
@@ -58,7 +66,7 @@ to add the following to your `.bashrc` or `.zshrc`:
 PATH="./node_modules/.bin:$PATH"
 ```
 
-### in your own scripts
+### In your own scripts
 
 If you want to define your own specifications the best choice is to build your own script.  
 A good starting point are the predefined specifications from [`dist/specs`](./dist/specs.d.ts).

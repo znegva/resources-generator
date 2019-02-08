@@ -30,41 +30,13 @@ For Android you have to take care of the rounded corners yourself, everything yo
 don't want to see must be transparent - so your best choice is to use a png-template.
 Please also note [chapter transparency](#transparency) below.
 
-### Special cases
+When using the [default specifications](specifications) or the [command-line version](#from-the-command-line) you need to prepare your templates as following:
 
-#### NinePatch images
+- Splashscreen template for Android and iOS as `./model/splash.png`
+- Icon template for Android as `./model/android/icon.png`
+- Icon template for iOS as `./model/ios/icon.png`
 
-Android supports [NinePatch drawables](https://developer.android.com/guide/topics/graphics/drawables#nine-patch) 
-for its splashscreens - this project automatically generates them when your targets `fileName` 
-has the extension `*.9.png` , e.g. `screen-mdpi-portrait.9.png`.
-
-The Android splashscreen defaults in `dist/specs` are configured to generate NinePatch files.
-
-**Hint:** To make nine-patch splashscreen work you need to set
-
-```xml
-<preference name="SplashMaintainAspectRatio" value="false" />
-```
-
-in your `config.xml`!
-
-#### Transparency
-
-When nothing else is declared Alpha channel (transparency) is removed from the resulting resource images.  
-If you want to keep transparency you need to set this in your `ResourceDefinition` by declaring `keepAlpha` as `true`.
-The Android icon defaults in `dist/specs` are configured to preserve transparency.
-
-As [NinePatch images](#ninepatch-images) are based on transparent areas alpha channel is preserved here in every case.
-
-#### Small templates
-
-As noted your templates should be 2732x2732px for splashscreens.
-This requirement is based on the required image size for iPad Pro splashscreens, see 
-[Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/launch-screen/).
-
-If you request the script to generate a resource image that is bigger then the provided template
-the template is never scaled up! Instead we stretch the most outer regions until the desired size is met
-(this kind-of imitates what is done with NinePatch images).
+For any individual requirements please see [chapter _in your own scripts_](#in-your-own-scripts). 
 
 ### from the command-line
 
@@ -109,7 +81,7 @@ import {
   iosIconDefaults
 } from "cordova-resources-gen/dist/specs";
 
-//change the template for android splashcreens
+//change the template for Android splashcreens
 androidSplashDefaults.sourceFile = "./model/android/splash.png";
 
 //we also want a 256px Android icon
@@ -167,6 +139,41 @@ Now you are able to call `npm run resources:generate` to regenerate your resourc
 
 For a plain node example please see [`bin/cordova-resources-gen`](bin/cordova-resources-gen).
 
+### Special cases
+
+#### NinePatch images
+
+Android supports [NinePatch drawables](https://developer.android.com/guide/topics/graphics/drawables#nine-patch) 
+for its splashscreens - this project automatically generates them when your targets `fileName` 
+has the extension `*.9.png` , e.g. `screen-mdpi-portrait.9.png`.
+
+The Android splashscreen defaults in `dist/specs` are configured to generate NinePatch files.
+
+**Hint:** To make nine-patch splashscreen work you need to set
+
+```xml
+<preference name="SplashMaintainAspectRatio" value="false" />
+```
+
+in your `config.xml`!
+
+#### Transparency
+
+When nothing else is declared Alpha channel (transparency) is removed from the resulting resource images.  
+If you want to keep transparency you need to set this in your `ResourceDefinition` by declaring `keepAlpha` as `true`.
+The Android icon defaults in `dist/specs` are configured to preserve transparency.
+
+As [NinePatch images](#ninepatch-images) are based on transparent areas alpha channel is preserved here in every case.
+
+#### Small templates
+
+As noted your templates should be 2732x2732px for splashscreens.
+This requirement is based on the required image size for iPad Pro splashscreens, see 
+[Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/launch-screen/).
+
+If you request the script to generate a resource image that is bigger then the provided template
+the template is never scaled up! Instead we stretch the most outer regions until the desired size is met
+(this kind-of imitates what is done with NinePatch images).
 
 ## Specifications
 

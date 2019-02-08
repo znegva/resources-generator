@@ -22,7 +22,8 @@ to the npm repository is planned.
 
 ## Usage
 
-Your splash should be a 2732x2732px image, and the main content should fit a center square of 1200x1200px.
+Your splash template should be a 2732x2732px image, and the main content 
+should fit a center square of 1200x1200px.
 
 Your icon template should be a 1024x1024px image.
 For Android you have to take care of the rounded corners yourself, everything you 
@@ -54,6 +55,16 @@ If you want to keep transparency you need to set this in your `ResourceDefinitio
 The Android icon defaults in `dist/specs` are configured to preserve transparency.
 
 As [NinePatch images](#ninepatch-images) are based on transparent areas alpha channel is preserved here in every case.
+
+#### Small templates
+
+As noted your templates should be 2732x2732px for splashscreens.
+This requirement is based on the required image size for iPad Pro splashscreens, see 
+[Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/launch-screen/).
+
+If you request the script to generate a resource image that is bigger then the provided template
+the template is never scaled up! Instead we stretch the most outer regions until the desired size is met
+(this kind-of imitates what is done with NinePatch images).
 
 ### from the command-line
 

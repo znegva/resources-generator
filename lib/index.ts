@@ -22,6 +22,13 @@ async function getImageDim(
   });
 }
 
+//dont console.log when in test env
+function log(m: any){
+  if(!(process.env.NODE_ENV == "test")){
+    console.log(m);
+  }
+}
+
 async function generateTarget(
   sourceFile: string,
   targetDir: string,
@@ -32,7 +39,7 @@ async function generateTarget(
   let needFlatten = sourceFile.slice(-4) == ".psd"; //combine layers etc.
 
   if (sourceFile === target.fileName) {
-    console.error(
+    log(
       `Skipping ${target.fileName}, output would overwrite input file`
     );
     return Promise.reject();
@@ -132,12 +139,12 @@ async function generateTarget(
   return new Promise((resolve, reject) => {
     convert.write(fullTarget, error => {
       if (error) {
-        console.log(
+        log(
           ` ✖ Could not write ${target.fileName}, please check your config.`
         );
         reject();
       } else {
-        console.log(
+        log(
           ` ✔ ${target.fileName} generated${
             applyNinePatch ? " (Nine-Patch applied)" : ""
           }${keepAlpha ? " (Alpha Channel preserved)" : ""}.`
@@ -152,8 +159,8 @@ async function generateTarget(
  * our main export
  */
 export function generateResource(def: ResourceDefinition): Promise<any> {
-  console.log(`\nGenerating: ${def.description}`);
-  console.log(
+  log(`\nGenerating: ${def.description}`);
+  log(
     `(source file: ${def.sourceFile}, target directory: ${def.targetDir})`
   );
 
@@ -178,7 +185,7 @@ export function generateResource(def: ResourceDefinition): Promise<any> {
           reject();
         });
     } else {
-      console.log(`Sourcefile ${def.sourceFile} not found, skipping.`);
+      log(`Sourcefile ${def.sourceFile} not found, skipping.`);
       reject();
     }
   });

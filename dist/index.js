@@ -36,12 +36,18 @@ function getImageDim(filename, im) {
         });
     });
 }
+//dont console.log when in test env
+function log(m) {
+    if (!(process.env.NODE_ENV == "test")) {
+        console.log(m);
+    }
+}
 function generateTarget(sourceFile, targetDir, keepAlpha, target) {
     return __awaiter(this, void 0, void 0, function* () {
         let applyNinePatch = target.fileName.slice(-6) == ".9.png";
         let needFlatten = sourceFile.slice(-4) == ".psd"; //combine layers etc.
         if (sourceFile === target.fileName) {
-            console.error(`Skipping ${target.fileName}, output would overwrite input file`);
+            log(`Skipping ${target.fileName}, output would overwrite input file`);
             return Promise.reject();
         }
         let im = gm.subClass({
@@ -123,11 +129,11 @@ function generateTarget(sourceFile, targetDir, keepAlpha, target) {
         return new Promise((resolve, reject) => {
             convert.write(fullTarget, error => {
                 if (error) {
-                    console.log(` ✖ Could not write ${target.fileName}, please check your config.`);
+                    log(` ✖ Could not write ${target.fileName}, please check your config.`);
                     reject();
                 }
                 else {
-                    console.log(` ✔ ${target.fileName} generated${applyNinePatch ? " (Nine-Patch applied)" : ""}${keepAlpha ? " (Alpha Channel preserved)" : ""}.`);
+                    log(` ✔ ${target.fileName} generated${applyNinePatch ? " (Nine-Patch applied)" : ""}${keepAlpha ? " (Alpha Channel preserved)" : ""}.`);
                     resolve();
                 }
             });
@@ -138,8 +144,8 @@ function generateTarget(sourceFile, targetDir, keepAlpha, target) {
  * our main export
  */
 function generateResource(def) {
-    console.log(`\nGenerating: ${def.description}`);
-    console.log(`(source file: ${def.sourceFile}, target directory: ${def.targetDir})`);
+    log(`\nGenerating: ${def.description}`);
+    log(`(source file: ${def.sourceFile}, target directory: ${def.targetDir})`);
     return new Promise((resolve, reject) => {
         if (fs.existsSync(def.sourceFile)) {
             let promises = [];
@@ -155,7 +161,7 @@ function generateResource(def) {
             });
         }
         else {
-            console.log(`Sourcefile ${def.sourceFile} not found, skipping.`);
+            log(`Sourcefile ${def.sourceFile} not found, skipping.`);
             reject();
         }
     });

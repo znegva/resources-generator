@@ -18,7 +18,7 @@ e.g. for Cordova based projects.
 Inside of your project directory:
 
 ```bash
- % npm install "https://github.com/znegva/splashicon-generator.git"
+ % npm install "https://github.com/znegva/resources-generator.git"
 ```
 
 Atm only installation directly from GitHub is possible, adding this project

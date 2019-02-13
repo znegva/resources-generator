@@ -11,28 +11,12 @@ import { expect } from "chai";
 import "mocha";
 
 describe("main function", () => {
-  let unknownSourceFileDef: ResourceDefinition;
-  let simpleResourceDef: ResourceDefinition;
-
   after(() => {
     //remove the target-dir
     fs.removeSync("./testfiles/target/");
   });
 
-  beforeEach(() => {
-    unknownSourceFileDef = {
-      description: "targets without a source",
-      sourceFile: "./thisFileDoesNotExist.png",
-      targetDir: "./testfiles/target/",
-      targets: []
-    };
-    simpleResourceDef = {
-      description: "a basic resource definition",
-      sourceFile: "./testfiles/icon.png",
-      targetDir: "./testfiles/target/",
-      targets: [{ fileName: "a.png", width: 100 }]
-    };
-  });
+  beforeEach(() => {});
 
   it("should be a function", () => {
     const result = "hello";
@@ -40,8 +24,13 @@ describe("main function", () => {
   });
 
   it("should reject for unfound source files", done => {
-    let ret = generateResource(unknownSourceFileDef);
-    ret
+    let res: ResourceDefinition = {
+      description: "resource definition with not present sourceFile",
+      sourceFile: "./thisFileDoesNotExist.png",
+      targetDir: "./testfiles/target/",
+      targets: [{ fileName: "dontcare.png", width: 100 }]
+    };
+    generateResource(res)
       .then(() => {
         done(new Error("Promise got resolved"));
       })
@@ -51,11 +40,18 @@ describe("main function", () => {
   });
 
   it("should generate the targetDir if not already present", done => {
+    let res: ResourceDefinition = {
+      description: "a basic resource definition",
+      sourceFile: "./testfiles/icon.png",
+      targetDir: "./testfiles/target/",
+      targets: [{ fileName: "a.png", width: 100 }]
+    };
     //make sure it is not there
-    fs.removeSync(simpleResourceDef.targetDir);
-    generateResource(simpleResourceDef).then(() => {
+    fs.removeSync(res.targetDir);
+
+    generateResource(res).then(() => {
       //check if the dir now exists
-      if (fs.pathExistsSync(simpleResourceDef.targetDir)) {
+      if (fs.pathExistsSync(res.targetDir)) {
         done();
       } else {
         done(new Error("directory is not found"));
@@ -64,13 +60,16 @@ describe("main function", () => {
   });
 
   it("should not depend on closing slash of targetDir", done => {
-    //make sure it is not there
-    fs.removeSync(simpleResourceDef.targetDir);
-    let res: ResourceDefinition = JSON.parse(JSON.stringify(simpleResourceDef));
-    res.targetDir = './testfiles/target'; //NO closing slash
+    let res: ResourceDefinition = {
+      description: "a basic resource definition",
+      sourceFile: "./testfiles/icon.png",
+      targetDir: "./testfiles/target", //NO closing slash
+      targets: [{ fileName: "a.png", width: 100 }]
+    };
+
     generateResource(res).then(() => {
       //check if the dir now exists
-      if (fs.existsSync(path.join( res.targetDir, res.targets[0].fileName))) {
+      if (fs.existsSync(path.join(res.targetDir, res.targets[0].fileName))) {
         done();
       } else {
         done(new Error("file not found"));
@@ -79,14 +78,16 @@ describe("main function", () => {
   });
 
   it("should not depend on leading dot in sourceFile or targetDir", done => {
-    //make sure it is not there
-    fs.removeSync(simpleResourceDef.targetDir);
-    let res: ResourceDefinition = JSON.parse(JSON.stringify(simpleResourceDef));
-    res.targetDir = 'testfiles/target'; //NO leading dot!
-    res.sourceFile = "testfiles/splash.png";
+    let res: ResourceDefinition = {
+      description: "a basic resource definition",
+      sourceFile: "testfiles/icon.png",
+      targetDir: "testfiles/target/", //NO leading dot!
+      targets: [{ fileName: "nodot_test.png", width: 100 }]
+    };
+
     generateResource(res).then(() => {
       //check if the dir now exists
-      if (fs.existsSync(path.join( res.targetDir, res.targets[0].fileName))) {
+      if (fs.existsSync(path.join(res.targetDir, res.targets[0].fileName))) {
         done();
       } else {
         done(new Error("file not found"));
@@ -95,44 +96,57 @@ describe("main function", () => {
   });
 
   it("should skip if we would overwrite our sourceFile", done => {
-    //make sure it is not there
-    fs.removeSync(simpleResourceDef.targetDir);
-    let res: ResourceDefinition = JSON.parse(JSON.stringify(simpleResourceDef));
-    res.targets.push({
-      fileName: res.sourceFile,
-      width: 99
-    });
-    res.targetDir = "./"; //save it to the same dir as our sourcefile (relative from whereever we call!)
-    generateResource(res).then(() => {
-      done(new Error("sourceFile has been overwritten"));
-    }).catch(()=>{
-      done();
-    });
+    let res: ResourceDefinition = {
+      description: "a lazy designed resource definition",
+      sourceFile: "./testfiles/icon.png",
+      targetDir: "./testfiles/", //save it to the same dir as our sourcefile
+      targets: [{ fileName: "icon.png", width: 100 }]
+    };
+
+    generateResource(res)
+      .then(() => {
+        done(new Error("sourceFile has been overwritten"));
+      })
+      .catch(() => {
+        done();
+      });
   });
 
   it("should NOT skip if source and target just have the same fileName", done => {
-    //make sure it is not there
-    fs.removeSync(simpleResourceDef.targetDir);
-    let res: ResourceDefinition = JSON.parse(JSON.stringify(simpleResourceDef));
-    res.targets.push({
-      fileName: res.sourceFile,
-      width: 99
-    });
-    generateResource(res).then(() => {
-      done();
-    }).catch(()=>{
-      done(new Error("skipped just bc of same filename"));
-    });
+    let res: ResourceDefinition = {
+      description: "a maybe misleadingly designed resource definition",
+      sourceFile: "./testfiles/icon.png",
+      targetDir: "./testfiles/",
+      targets: [{ fileName: "testfiles/icon.png", width: 100 }]
+    };
+
+    generateResource(res)
+      .then(() => {
+        //remove the generated dir+file!
+        fs.removeSync("./testfiles/testfiles/");
+
+        done();
+      })
+      .catch(() => {
+        done(new Error("skipped just bc of same filename"));
+      });
   });
 
   it("should generate single target with the given name and width", done => {
-    generateResource(simpleResourceDef).then(() => {
-      let t = simpleResourceDef.targets[0];
+    let res: ResourceDefinition = {
+      description: "a basic resource definition",
+      sourceFile: "./testfiles/icon.png",
+      targetDir: "./testfiles/target/",
+      targets: [{ fileName: "a.png", width: 123 }]
+    };
+    let t = res.targets[0];
+
+    generateResource(res).then(() => {
       //read the file
       let im = gm.subClass({
         imageMagick: true
       });
-      im(path.join(simpleResourceDef.targetDir, t.fileName))
+      im(path.join(res.targetDir, t.fileName))
         .ping()
         .size((err, size) => {
           //check its size
@@ -146,13 +160,21 @@ describe("main function", () => {
   });
 
   it("should generate square target if only width is given", done => {
-    generateResource(simpleResourceDef).then(() => {
-      let t = simpleResourceDef.targets[0];
+    let res: ResourceDefinition = {
+      description: "a basic resource definition",
+      sourceFile: "./testfiles/icon.png",
+      targetDir: "./testfiles/target/",
+      targets: [{ fileName: "a.png", width: 123 }]
+    };
+    let t = res.targets[0];
+
+    generateResource(res).then(() => {
+      let t = res.targets[0];
       //read the file
       let im = gm.subClass({
         imageMagick: true
       });
-      im(path.join(simpleResourceDef.targetDir, t.fileName))
+      im(path.join(res.targetDir, t.fileName))
         .ping()
         .size((err, size) => {
           //check its size
@@ -177,7 +199,7 @@ describe("main function", () => {
           imageMagick: true
         });
         res.targets.forEach(target => {
-          im(path.join(simpleResourceDef.targetDir, target.fileName))
+          im(path.join(res.targetDir, target.fileName))
             .ping()
             .size((err, size) => {
               //if an error occured the test has failed
@@ -216,7 +238,7 @@ describe("main function", () => {
           imageMagick: true
         });
         res.targets.forEach(target => {
-          im(path.join(simpleResourceDef.targetDir, target.fileName))
+          im(path.join(res.targetDir, target.fileName))
             .ping()
             .size((err, size) => {
               //if an error occured the test has failed
@@ -234,7 +256,7 @@ describe("main function", () => {
                 done(new Error(`${target.fileName} has wrong height!`));
             })
             .identify((err, imageInfo) => {
-              let infos = imageInfo as { [key: string]: any };  //we need to define our own "type"
+              let infos = imageInfo as { [key: string]: any }; //we need to define our own "type"
               if (!infos["Alpha"])
                 done(new Error(`${target.fileName} has no Alpha Channel!`));
             });
@@ -245,7 +267,7 @@ describe("main function", () => {
       .catch(() => {
         done(new Error("Promise rejected"));
       });
-  }).timeout(10000);
+  }).timeout(15000);
   /*
   it("should keep Alpha-Channel if told to do so", done => {
     done("TODO");

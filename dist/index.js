@@ -16,6 +16,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs-extra"));
+const path = __importStar(require("path"));
 const gm = __importStar(require("gm"));
 /*
  * helper functions
@@ -46,8 +47,10 @@ function generateTarget(sourceFile, targetDir, keepAlpha, target) {
     return __awaiter(this, void 0, void 0, function* () {
         let applyNinePatch = target.fileName.slice(-6) == ".9.png";
         let needFlatten = sourceFile.slice(-4) == ".psd"; //combine layers etc.
-        if (sourceFile === target.fileName) {
-            log(`Skipping ${target.fileName}, output would overwrite input file`);
+        let fullTargetName = path.join(targetDir, target.fileName);
+        //make sure we are not overwriting our source-file
+        if (path.relative(sourceFile, fullTargetName) == '') {
+            log(`Skipped generation of ${fullTargetName}, output would overwrite input file`);
             return Promise.reject();
         }
         let im = gm.subClass({
@@ -123,11 +126,10 @@ function generateTarget(sourceFile, targetDir, keepAlpha, target) {
             convert = convert.out("-background", "white", "-alpha", "off");
         }
         //create output dir, if needed
-        let fullTarget = targetDir + target.fileName;
-        fs.ensureFileSync(fullTarget);
+        fs.ensureFileSync(fullTargetName);
         //save the file
         return new Promise((resolve, reject) => {
-            convert.write(fullTarget, error => {
+            convert.write(fullTargetName, error => {
                 if (error) {
                     log(` ✖ Could not write ${target.fileName}, please check your config.`);
                     reject();

@@ -55,11 +55,73 @@ describe("main function", () => {
     fs.removeSync(simpleResourceDef.targetDir);
     generateResource(simpleResourceDef).then(() => {
       //check if the dir now exists
-      if (fs.existsSync(simpleResourceDef.targetDir)) {
+      if (fs.pathExistsSync(simpleResourceDef.targetDir)) {
         done();
       } else {
         done(new Error("directory is not found"));
       }
+    });
+  });
+
+  it("should not depend on closing slash of targetDir", done => {
+    //make sure it is not there
+    fs.removeSync(simpleResourceDef.targetDir);
+    let res: ResourceDefinition = JSON.parse(JSON.stringify(simpleResourceDef));
+    res.targetDir = './testfiles/target'; //NO closing slash
+    generateResource(res).then(() => {
+      //check if the dir now exists
+      if (fs.existsSync(path.join( res.targetDir, res.targets[0].fileName))) {
+        done();
+      } else {
+        done(new Error("file not found"));
+      }
+    });
+  });
+
+  it("should not depend on leading dot in sourceFile or targetDir", done => {
+    //make sure it is not there
+    fs.removeSync(simpleResourceDef.targetDir);
+    let res: ResourceDefinition = JSON.parse(JSON.stringify(simpleResourceDef));
+    res.targetDir = 'testfiles/target'; //NO leading dot!
+    res.sourceFile = "testfiles/splash.png";
+    generateResource(res).then(() => {
+      //check if the dir now exists
+      if (fs.existsSync(path.join( res.targetDir, res.targets[0].fileName))) {
+        done();
+      } else {
+        done(new Error("file not found"));
+      }
+    });
+  });
+
+  it("should skip if we would overwrite our sourceFile", done => {
+    //make sure it is not there
+    fs.removeSync(simpleResourceDef.targetDir);
+    let res: ResourceDefinition = JSON.parse(JSON.stringify(simpleResourceDef));
+    res.targets.push({
+      fileName: res.sourceFile,
+      width: 99
+    });
+    res.targetDir = "./"; //save it to the same dir as our sourcefile (relative from whereever we call!)
+    generateResource(res).then(() => {
+      done(new Error("sourceFile has been overwritten"));
+    }).catch(()=>{
+      done();
+    });
+  });
+
+  it("should NOT skip if source and target just have the same fileName", done => {
+    //make sure it is not there
+    fs.removeSync(simpleResourceDef.targetDir);
+    let res: ResourceDefinition = JSON.parse(JSON.stringify(simpleResourceDef));
+    res.targets.push({
+      fileName: res.sourceFile,
+      width: 99
+    });
+    generateResource(res).then(() => {
+      done();
+    }).catch(()=>{
+      done(new Error("skipped just bc of same filename"));
     });
   });
 

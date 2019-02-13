@@ -1,4 +1,5 @@
 import * as fs from "fs-extra";
+import * as path from "path";
 import * as gm from "gm";
 import { TargetSpecification, ResourceDefinition } from "./specs";
 
@@ -37,10 +38,12 @@ async function generateTarget(
 ): Promise<void> {
   let applyNinePatch = target.fileName.slice(-6) == ".9.png";
   let needFlatten = sourceFile.slice(-4) == ".psd"; //combine layers etc.
+  let fullTargetName = path.join(targetDir , target.fileName);
 
-  if (sourceFile === target.fileName) {
+  //make sure we are not overwriting our source-file
+  if (path.relative(sourceFile, fullTargetName) == '') {
     log(
-      `Skipping ${target.fileName}, output would overwrite input file`
+      `Skipped generation of ${fullTargetName}, output would overwrite input file`
     );
     return Promise.reject();
   }
@@ -132,12 +135,11 @@ async function generateTarget(
   }
 
   //create output dir, if needed
-  let fullTarget = targetDir + target.fileName;
-  fs.ensureFileSync(fullTarget);
+  fs.ensureFileSync(fullTargetName);
 
   //save the file
   return new Promise((resolve, reject) => {
-    convert.write(fullTarget, error => {
+    convert.write(fullTargetName, error => {
       if (error) {
         log(
           ` ✖ Could not write ${target.fileName}, please check your config.`

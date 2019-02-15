@@ -194,7 +194,7 @@ the template is never scaled up! Instead we stretch the most outer regions until
 ## Specifications
 
 To generate resources your input needs to follow some specifications, they are 
-described by interfaces that can be imported from [`dist/specs`](./dist/specs.d.ts).
+described by interfaces that can be imported from the package.
 
 ```typescript
 export interface TargetSpecification {

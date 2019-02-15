@@ -1,9 +1,5 @@
-import { generateResource } from "./index";
-import {
-  ResourceDefinition,
-  iosSplashDefaults,
-  androidSplashDefaults
-} from "./specs";
+import { generateResource, ResourceDefinition } from "./index";
+import { iosSplashDefaults, androidSplashDefaults } from "./specs";
 import * as fs from "fs-extra";
 import * as gm from "gm";
 import * as path from "path";

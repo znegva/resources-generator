@@ -1,20 +1,4 @@
-/*
- * Interfaces
- */
-export interface TargetSpecification {
-  fileName: string;
-  width: number;
-  height?: number; //height is optional, if only width is given we assume a square target
-}
-
-export interface ResourceDefinition {
-  description: string;
-  sourceFile: string;
-  keepAlpha?: boolean; //sometimes we need to keep the Alpha-Channel (e.g. Android icons)
-  targetDir: string; //directory where to store the generated resources
-  targets: Array<TargetSpecification>;
-}
-
+import { TargetSpecification, ResourceDefinition } from "./index";
 /*
  * Splashscreen default definitions
  */

@@ -1,12 +1,17 @@
 import { generateResource, ResourceDefinition } from "./index";
-import { iosSplashDefaults, androidSplashDefaults } from "./specs";
+import {
+  iosSplashDefaults,
+  androidSplashDefaults,
+  androidIconDefaults
+} from "./specs";
 import * as fs from "fs-extra";
 import * as gm from "gm";
 import * as path from "path";
+import * as util from "util";
 import { expect } from "chai";
 import "mocha";
 
-describe("main function", () => {
+describe("source and target specifications", () => {
   after(() => {
     //remove the target-dir
     fs.removeSync("./testfiles/target/");
@@ -126,6 +131,13 @@ describe("main function", () => {
       .catch(() => {
         done(new Error("skipped just bc of same filename"));
       });
+  });
+});
+
+describe("correct sizes etc.", () => {
+  after(() => {
+    //remove the target-dir
+    fs.removeSync("./testfiles/target/");
   });
 
   it("should generate single target with the given name and width", done => {
@@ -269,4 +281,38 @@ describe("main function", () => {
     done("TODO");
   });
   */
+});
+
+describe("binary", () => {
+  after(() => {
+    //remove the target-dir
+    fs.removeSync("./testfiles/bintest/");
+  });
+
+  it("should generate all android icons when told to do so (using custom source and targetDir)", done => {
+    //call the binary
+    let exec = util.promisify(require("child_process").exec);
+    let sourceFile = "./testfiles/icon.png";
+    let targetDir = "./testfiles/bintest/";
+    exec(
+      `./bin/resources-generator --platform=android --type=icon --source="${sourceFile}" --targetDir="${targetDir}"`
+    )
+      .then((ret: { stdout: string; stderr: string }) => {
+        if (ret.stderr)
+          done(new Error(`Error during executing binary: ${ret.stderr}`));
+
+        //test if all files are there!
+        androidIconDefaults.targets.forEach(target => {
+          if (!fs.existsSync(path.join(targetDir, target.fileName))) {
+            done(new Error(`file ${target.fileName} not found`));
+          }
+        });
+
+        //when we reach this point all files are there :)
+        done();
+      })
+      .catch(() => {
+        done(new Error("Error during executing binary"));
+      });
+  }).timeout(15000);
 });

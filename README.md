@@ -18,11 +18,8 @@ e.g. for Cordova based projects.
 Inside of your project directory:
 
 ```bash
- % npm install "https://github.com/znegva/resources-generator.git"
+ % npm install resources-generator
 ```
-
-Atm only installation directly from GitHub is possible, adding this project
-to the npm repository is planned.
 
 The script depends on imageMagick, it needs to be installed:
 macOS:

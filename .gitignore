@@ -4,7 +4,3 @@ npm-debug.log
 .env
 .DS_Store
 .vscode
-
-## some dirs and files we use for testing atm
-/model
-/res

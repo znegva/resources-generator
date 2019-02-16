@@ -81,7 +81,7 @@ PATH="./node_modules/.bin:$PATH"
 ### In your own scripts
 
 If you want to define your own specifications the best choice is to build your own script.  
-A good starting point are the predefined specifications from [`dist/specs`](./dist/specs.d.ts).
+A good starting point are the predefined specifications from [`dist/specs`](./dist/specs.js).
 
 Example:
 

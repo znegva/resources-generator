@@ -1,19 +1,40 @@
 {
   "name": "resources-generator",
   "version": "0.1.2",
-  "description": "Another Cordova resources generator script",
+  "description": "Another resources generator for your Cordova project",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "preferGlobal": false,
   "bin": {
     "resources-generator": "./bin/resources-generator"
   },
+  "files":[
+    "dist/",
+    "bin/"
+  ],
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register **/*.spec.ts",
     "build": "tsc"
   },
   "author": "Martin Kausche",
   "license": "MIT",
+  "keywords": [
+    "resources",
+    "generator",
+    "cordova",
+    "phonegap",
+    "icon",
+    "splash",
+    "resize"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/znegva/resources-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/znegva/resources-generator/issues"
+  },
+  "homepage": "https://github.com/znegva/resources-generator",
   "dependencies": {
     "fs-extra": "^7.0.1",
     "gm": "^1.23.1",

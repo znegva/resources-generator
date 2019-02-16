@@ -44,7 +44,7 @@ function log(m) {
     }
 }
 /*
- * generate a songle target with given specs
+ * generate a single target with given specs
  */
 function generateTarget(sourceFile, targetDir, keepAlpha, target) {
     return __awaiter(this, void 0, void 0, function* () {

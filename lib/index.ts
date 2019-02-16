@@ -47,7 +47,7 @@ function log(m: any){
 }
 
 /*
- * generate a songle target with given specs
+ * generate a single target with given specs
  */
 async function generateTarget(
   sourceFile: string,

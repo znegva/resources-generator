@@ -1,6 +1,6 @@
 {
   "name": "resources-generator",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Another resources generator for your Cordova project",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

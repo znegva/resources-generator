@@ -83,9 +83,11 @@ A good starting point are the predefined specifications from [`dist/specs`](./di
 Example:
 
 ```typescript
-import { generateResource } from "resources-generator";
+import { 
+  generateResource,
+  ResourceDefinition 
+} from "resources-generator";
 import {
-  ResourceDefinition,
   androidSplashDefaults,
   androidIconDefaults,
   androidNotificationIconDefaults,
@@ -162,7 +164,7 @@ has the extension `*.9.png` , e.g. `screen-mdpi-portrait.9.png`.
 
 The Android splashscreen defaults in `dist/specs` are configured to generate NinePatch files.
 
-**Hint:** To make nine-patch splashscreen work you need to set
+**Hint:** To make nine-patch splashscreen work in Cordova projects you need to set
 
 ```xml
 <preference name="SplashMaintainAspectRatio" value="false" />

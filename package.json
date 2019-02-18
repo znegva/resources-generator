@@ -1,6 +1,6 @@
 {
   "name": "resources-generator",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Another resources generator for your Cordova project",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -34,7 +34,7 @@
   "bugs": {
     "url": "https://github.com/znegva/resources-generator/issues"
   },
-  "homepage": "https://github.com/znegva/resources-generator",
+  "homepage": "https://github.com/znegva/resources-generator#readme",
   "dependencies": {
     "fs-extra": "^7.0.1",
     "gm": "^1.23.1",

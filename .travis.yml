@@ -3,4 +3,4 @@ node_js:
   - "8"
   - "10"
 after_success:
-  - node run report-coverage
+  - npm run report-coverage

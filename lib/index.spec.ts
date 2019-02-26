@@ -230,7 +230,7 @@ describe("correct sizes etc.", () => {
       .catch(() => {
         done(new Error("Promise rejected"));
       });
-  }).timeout(10000);
+  }).timeout(20000);
 
   it("should generate NinePatch (extra border, transparency) when .9.png as target-extension (uses androidSplashDefaults)", done => {
     //generate all android-splash targets and check if they are generated correctly

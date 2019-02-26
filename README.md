@@ -1,3 +1,9 @@
+# resources-generator
+
+[![Build Status](https://travis-ci.com/znegva/resources-generator.svg?branch=master)](https://travis-ci.com/znegva/resources-generator)
+[![codecov](https://codecov.io/gh/znegva/resources-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/znegva/resources-generator)
+[![npm version](https://badge.fury.io/js/resources-generator.svg)](https://badge.fury.io/js/resources-generator)
+
 Generate automatically resized splashscreens and icons for mobile platforms,
 e.g. for Cordova based projects.  
 

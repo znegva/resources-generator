@@ -22,6 +22,7 @@ Inside of your project directory:
 ```
 
 The script depends on imageMagick, it needs to be installed:
+
 macOS:
 ```bash
  % brew install imagemagick

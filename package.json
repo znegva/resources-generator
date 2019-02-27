@@ -2,21 +2,6 @@
   "name": "resources-generator",
   "version": "0.1.5",
   "description": "Another resources generator for your Cordova project",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "preferGlobal": false,
-  "bin": {
-    "resources-generator": "./bin/resources-generator"
-  },
-  "files": [
-    "dist/",
-    "bin/"
-  ],
-  "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --reporter=text mocha -r ts-node/register **/*.spec.ts",
-    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "build": "tsc"
-  },
   "author": "Martin Kausche",
   "license": "MIT",
   "keywords": [
@@ -36,6 +21,53 @@
     "url": "https://github.com/znegva/resources-generator/issues"
   },
   "homepage": "https://github.com/znegva/resources-generator#readme",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "preferGlobal": false,
+  "bin": {
+    "resources-generator": "./bin/resources-generator"
+  },
+  "files": [
+    "dist/",
+    "bin/"
+  ],
+  "scripts": {
+    "test": "cross-env NODE_ENV=test nyc mocha",
+    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "view-coverage": "nyc report --reporter=html && open coverage/index.html",
+    "build": "tsc"
+  },
+  "mocha": {
+    "spec": "**/*.spec.ts",
+    "require": [
+      "ts-node/register",
+      "source-map-support/register"
+    ],
+    "full-trace": true,
+    "bail": true
+  },
+  "nyc": {
+    "include": [
+      "**/*.ts",
+      "**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.spec.ts"
+    ],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true
+  },
   "dependencies": {
     "fs-extra": "^7.0.1",
     "gm": "^1.23.1",
@@ -45,14 +77,14 @@
     "@types/chai": "^4.1.7",
     "@types/fs-extra": "^5.0.5",
     "@types/gm": "^1.18.2",
-    "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.26",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.9.5",
     "chai": "^4.2.0",
     "codecov": "^3.2.0",
     "cross-env": "^5.2.0",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.2",
     "nyc": "^13.3.0",
     "ts-node": "^8.0.2",
-    "typescript": "^3.3.3"
+    "typescript": "^3.3.3333"
   }
 }

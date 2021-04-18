@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.androidNotificationIconDefaults = exports.androidCoverImage = exports.iosIconDefaults = exports.androidIconDefaults = exports.iosSplashDefaults = exports.androidSplashDefaults = void 0;
 /*
  * Splashscreen default definitions
  */

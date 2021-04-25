@@ -200,7 +200,7 @@ export function generateResource(def: ResourceDefinition): Promise<any> {
       });
       Promise.all(promises)
         .then(() => {
-          resolve();
+          resolve(true);
         })
         .catch(e => {
           reject();

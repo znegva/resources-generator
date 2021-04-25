@@ -173,7 +173,7 @@ function generateResource(def) {
             });
             Promise.all(promises)
                 .then(() => {
-                resolve();
+                resolve(true);
             })
                 .catch(e => {
                 reject();
